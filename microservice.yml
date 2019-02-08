@@ -1,0 +1,35 @@
+omg: 1
+lifecycle:
+  startup:
+    command: ["node", "app.js"]
+info:
+  version: 1.0.0
+  title: Image Diff
+  description: This is a simple image difference service
+  contact:
+    name: Rohit S
+    url: https://github.com/heaptracetechnology/microservice-imagediff
+    email: rohits@heaptrace.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT 
+actions:
+  imagediff:
+    help: Get difference between two images
+    arguments:
+      image:
+        type: path
+        in: requestBody
+        help: First and second image to compare
+    http:
+      port: 3000
+      method: post
+      path: /image-diff
+      contentType: multipart/form-data
+    output:
+      type: boolean
+environment:
+  PUBSUB_PORT:
+    required: true
+    type: int
+    help: port for the server

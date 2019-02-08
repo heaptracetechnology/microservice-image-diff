@@ -1,0 +1,33 @@
+{
+    "name": "omg-image-diff",
+    "version": "1.0.0",
+    "description": "Image difference microservice for OMG",
+    "main": "app.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/heaptracetechnology/microservice-imagediff"
+    },
+    "author": "Rohit Shetty",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/heaptracetechnology/microservice-imagediff"
+    },
+    "homepage": "https://github.com/heaptracetechnology/microservice-imagediff#readme",
+    "dependencies": {
+        "body-parser": "^1.14.2",
+        "express": "4.13.3",
+        "multer": "1.1.0",
+        "pixelmatch": "4.0.2",
+        "fs": "0.0.1-security",
+        "pngjs": "3.3.3"
+    },
+    "devDependencies": {
+        "mocha": "^2.3.4",
+        "should": "^7.1.1",
+        "supertest": "~1.1.0"
+    },
+    "scripts": {
+        "start": "node app.js",
+        "test": "mocha"
+    }
+}
