@@ -1,0 +1,1 @@
+Folder to store files to compare, file deleted after compare
