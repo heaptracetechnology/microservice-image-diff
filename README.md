@@ -14,7 +14,7 @@ This microservice's goal is to compare different images.
 
 ### Test Service
 
-* If File are same return false and if different return true
+* If File are same return false and if different return dif.png file .
 
 ### CLI
 ```sh
