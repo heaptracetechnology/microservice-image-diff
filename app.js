@@ -29,7 +29,7 @@ app.post('/image-diff', function (req, res) {
                 return res.end("Error uploading file.", err);
             }
 
-            if (req.files == undefined) {
+            if (req.files == undefined || req.files.length < 2) {
                 ret = 'Please upload two images to compare';
                 res.writeHead(200, {
                     'Content-Length': Buffer.byteLength(ret),
@@ -39,16 +39,7 @@ app.post('/image-diff', function (req, res) {
                 return;
             }
 
-            if (req.files.length < 2) {
-                ret = 'Please upload two images to compare';
-                res.writeHead(200, {
-                    'Content-Length': Buffer.byteLength(ret),
-                    'Content-Type': 'text/plain'
-                })
-                res.end(ret);
-                return;
-            }
-
+           
             var img1 = fs.createReadStream(req.files[0].path).pipe(new PNG()).on('parsed', doneReading),
                 img2 = fs.createReadStream(req.files[1].path).pipe(new PNG()).on('parsed', doneReading),
                 filesRead = 0,
