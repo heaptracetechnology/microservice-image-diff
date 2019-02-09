@@ -31,5 +31,17 @@ $ omg exec image-diff -a image=<UPLOAD_IMAGE_PATH> -a image=<UPLOAD_IMAGE_PATH>
 * -- Key = image (for both images)
 * -- Value = Upload files
 
-### License
-[MIT](https://choosealicense.com/licenses/mit/)
+```
+
+## License
+### [MIT](https://choosealicense.com/licenses/mit/)
+
+## Docker
+### Build
+```
+docker build --rm -f "Dockerfile" -t microservice-image-diff:latest .
+```
+### RUN
+```
+docker run -p3000:3000 microservice-image-diff:latest
+```
