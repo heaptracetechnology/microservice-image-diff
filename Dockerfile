@@ -1,11 +1,7 @@
 FROM node:current-alpine
-
-RUN npm install pixelmatch
-
-RUN npm install express
-
-RUN npm install multer
-
-ADD app.js app.js
-
-ENTRYPOINT ["node", "app.js"]
+COPY . .
+#RUN ls -la ./uploads/*
+RUN chmod 755 /uploads
+RUN npm install
+EXPOSE 3000
+CMD [ "npm", "start" ]
