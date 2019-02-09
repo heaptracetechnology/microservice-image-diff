@@ -1,5 +1,5 @@
 # Image Diff as a microservice
-An OMG service to check difference in image content
+An OMG service to check difference in image content by pixel, this take two image and return diff image.
 
 [![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
 
@@ -10,15 +10,20 @@ This microservice's goal is to compare different images.
 ### OMG
 
 * omg validate
+```
+omg validate
+```
 * omg build
-
+```
+omg build
+```
 ### Test Service
 
 * If File are same return false and if different return dif.png file .
 
 ### CLI
 ```sh
-$ omg exec image-diff -a image=<UPLOAD_IMAGE_PATH> -a image=<UPLOAD_IMAGE_PATH>
+$ omg run imagediff -a image=<UPLOAD_IMAGE_PATH> -a image=<UPLOAD_IMAGE_PATH>
 ```
 
 ### Postman

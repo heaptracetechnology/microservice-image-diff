@@ -29,7 +29,7 @@ actions:
     output:
       type: boolean
 environment:
-  PUBSUB_PORT:
-    required: true
+  SERVER_PORT:
+    required: false
     type: int
     help: port for the server

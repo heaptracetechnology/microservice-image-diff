@@ -79,6 +79,6 @@ app.post('/image-diff', function (req, res) {
     });
 });
 
-app.listen((process.env.PUBSUB_PORT || 3000), function () {
+app.listen((process.env.SERVER_PORT || 3000), function () {
     console.log("Working on port 3000");
 });
