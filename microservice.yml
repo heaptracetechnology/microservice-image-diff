@@ -17,8 +17,12 @@ actions:
   imagediff:
     help: Get difference between two images
     arguments:
-      image:
-        type: path
+      image1:
+        type: any
+        in: requestBody
+        help: First and second image to compare
+      image2:
+        type: any
         in: requestBody
         help: First and second image to compare
     http:
@@ -27,7 +31,7 @@ actions:
       path: /image-diff
       contentType: multipart/form-data
     output:
-      type: boolean
+      type: any
 environment:
   SERVER_PORT:
     required: false
