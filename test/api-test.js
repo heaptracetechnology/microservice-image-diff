@@ -4,7 +4,7 @@ var fs = require('fs');
 var SERVER_URL = "http://localhost:3000/image-diff-by-base64";
 
 describe('image-diff-by-base64', function() {
-    it('Files are not same', function (done) {
+    it('Images are not same', function (done) {
       var Image1 = `${__dirname}/image/img1.png`;
       var Image2 = `${__dirname}/image/img2.png`;
       var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
@@ -18,7 +18,7 @@ describe('image-diff-by-base64', function() {
       done();
   });
 
-    it('Files are same', function (done) {
+    it('Images are same', function (done) {
       var Image1 = `${__dirname}/image/img1.png`;
       var Image2 = `${__dirname}/image/img2.png`;
       var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
