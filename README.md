@@ -5,7 +5,7 @@ An OMG service to check difference in image content by pixel, this take two imag
 
 This microservice's goal is to compare different images.
 
-## [OMG](hhttps://microservice.guide) CLI
+## [OMG](https://microservice.guide) CLI
 
 ### OMG
 
@@ -23,13 +23,13 @@ omg build
 
 ### CLI
 ```sh
-$ omg run imagediff -a image=<UPLOAD_IMAGE_PATH> -a image=<UPLOAD_IMAGE_PATH>
+$ omg run compare -a image1=<base64_content> -a image2=<base64_content>
 ```
 
 ### Postman
 ```sh
 * RUN with command "npm start"
-* POST localhost:3000/image-diff
+* POST localhost:3000/image-diff-by-base64
 * Upload two images under form-data in Body
 * form-data : Key/Value
 * NOTE : Set Key type to File
@@ -48,5 +48,5 @@ docker build --rm -f "Dockerfile" -t microservice-image-diff:latest .
 ```
 ### RUN
 ```
-docker run -p3000:3000 microservice-image-diff:latest
+docker run -p 3000:3000 microservice-image-diff:latest
 ```

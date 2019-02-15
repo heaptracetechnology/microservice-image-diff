@@ -1,81 +1,100 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var multer = require('multer');
+var fs1 = require('fs');
+var fs2 = require('fs');
 var fs = require('fs');
 var PNG = require('pngjs').PNG;
 var pixelmatch = require('pixelmatch');
 var app = express();
-app.use(bodyParser.json());
 var UPLOAD_TEMP_FOLDER = './uploads/';
+app.use(bodyParser.json());
+var HttpStatus = require('http-status-codes');
 
-var storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, UPLOAD_TEMP_FOLDER);
 
-    },
-    filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now());
+var message = {
+    success: "false",
+  };
+
+app.post('/image-diff-by-base64', function (req, res) {
+
+    var image1 = req.body.image1;
+    var image2 = req.body.image2;
+    res.setHeader('Content-Type', 'application/json');
+    
+    if (image1 == undefined || image2 == undefined) {
+        message.error = "Required two argument image1 and image2, use base64 from of file data";
+        return res.status(HttpStatus.BAD_REQUEST).send(message);
     }
-});
 
-var upload = multer({
-    storage: storage
-}).array('image', 2);
+    function getFullPathFileName(name) {
+        return UPLOAD_TEMP_FOLDER + name + Date.now() + ".png";
+    }
 
-app.post('/image-diff', function (req, res) {
-    upload(req, res, function (err) {
+    var writeCount = 0;
+    var fsr1;
+    var fsr2;
 
+    var readCount = 0;
+    function doneReading() {
+        if (++readCount < 2) return;
+        var diff = new PNG({
+            width: fsr1.width,
+            height: fsr1.height
+        });
+
+        var diffpixcount = pixelmatch(fsr1.data, fsr2.data, diff.data, fsr1.width, fsr1.height, {
+            threshold: 0.1
+        });
+
+        if (diffpixcount > 0) {
+            var difffile = UPLOAD_TEMP_FOLDER + 'diff' + '-' + Date.now() + '.png';
+
+            var converteddata = "";
+
+            diff.pack().pipe(fs.createWriteStream(difffile).on('close', function () {
+                var bitmap = fs.readFileSync(difffile);
+                converteddata = new Buffer.from(bitmap).toString('base64');
+                var ret = { name: "diff.png", content: converteddata, type: 'base64' };
+                return res.status(HttpStatus.OK).send(ret);
+            }));
+
+        } else {
+            console.log("The images are same");
+            var ret = { name: "diff.png", content: "Images are same", type: 'base64' };
+            return res.status(HttpStatus.OK).send(ret);
+        }
+    }
+
+    function donewriting(fs, fd) {
+        fs.close(fd, function (err) {
             if (err) {
-                return res.end("Error uploading file.", err);
+                throw 'could not open file: ' + err;
             }
+        });
+        if (++writeCount < 2) return;
 
-            if (req.files == undefined || req.files.length < 2) {
-                ret = 'Please upload two images to compare';
-                res.writeHead(200, {
-                    'Content-Length': Buffer.byteLength(ret),
-                    'Content-Type': 'text/plain'
-                })
-                res.end(ret);
-                return;
-            }
+        fsr1 = fs.createReadStream(image1FilePath).pipe(new PNG()).on('parsed', doneReading);
+        fsr2 = fs.createReadStream(image2FilePath).pipe(new PNG()).on('parsed', doneReading);
+    }
 
-           
-            var img1 = fs.createReadStream(req.files[0].path).pipe(new PNG()).on('parsed', doneReading),
-                img2 = fs.createReadStream(req.files[1].path).pipe(new PNG()).on('parsed', doneReading),
-                filesRead = 0,
-                ret;
+    var image1FilePath = getFullPathFileName('image1');
+    var image2FilePath = getFullPathFileName('image2');
 
-            function doneReading() {
-                if (++filesRead < 2) return;
-                var diff = new PNG({
-                    width: img1.width,
-                    height: img1.height
-                });
+    let buffer1 = Buffer.from(image1, 'base64');
+    let buffer2 = Buffer.from(image2, 'base64');
 
-                var diffpixcount = pixelmatch(img1.data, img2.data, diff.data, img1.width, img1.height, {
-                    threshold: 0.1
-                });
+    fs1.open(image1FilePath, 'w', function (err, fd1) {
+        if (err) {
+            throw 'could not open file: ' + err;
+        }
+        fs1.write(fd1, buffer1, 0, buffer1.length, null, donewriting.bind(this, fs1, fd1));
+    });
 
-                if (diffpixcount > 0) {
-
-                    var difffile = UPLOAD_TEMP_FOLDER + 'diff' + '-' + Date.now() + '.png';
-                    diff.pack().pipe(fs.createWriteStream(difffile));
-                    res.writeHead(200, {
-                        "Content-Type": "application/octet-stream",
-                        "Content-Disposition": "attachment; filename=diff.png"
-                    });
-
-                    fs.createReadStream(difffile).pipe(res);
-                    fs.unlinkSync(difffile);
-
-                } else {
-                    res.end("false");
-                }
-
-                fs.unlinkSync(req.files[0].path);
-                fs.unlinkSync(req.files[1].path);
-            }
- 
+    fs2.open(image2FilePath, 'w', function (err, fd2) {
+        if (err) {
+            throw 'could not open file: ' + err;
+        }
+        fs2.write(fd2, buffer2, 0, buffer2.length, null, donewriting.bind(this, fs2, fd2));
     });
 });
 

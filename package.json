@@ -14,12 +14,15 @@
     },
     "homepage": "https://github.com/heaptracetechnology/microservice-imagediff#readme",
     "dependencies": {
-        "body-parser": "^1.14.2",
-        "express": "4.13.3",
-        "multer": "1.1.0",
-        "pixelmatch": "4.0.2",
+        "body-parser": "^1.18.3",
+        "express": "^4.16.4",
+        "filehandler": "0.0.0",
         "fs": "0.0.1-security",
-        "pngjs": "3.3.3"
+        "http-status-codes": "^1.3.0",
+        "multer": "^1.1.0",
+        "pixelmatch": "^4.0.2",
+        "pngjs": "^3.3.3"
+        
     },
     "devDependencies": {
         "mocha": "^2.3.4",

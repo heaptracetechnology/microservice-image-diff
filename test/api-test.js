@@ -1,31 +1,34 @@
-var should = require('should');
 var supertest = require('supertest');
 var request = supertest('localhost:3000');
+var fs = require('fs');
+var SERVER_URL = "http://localhost:3000/image-diff-by-base64";
 
-describe('image-diff', function() {
-    it('Files are not same', function(done) {
-       request.post('/image-diff')
-              .set('Content-Type', 'multipart/form-data')
-              .attach('image', './test/image/img1.png')
-              .attach('image', './test/image/img2.png')
-              .end(function(err, res) {
-                if(res){
-                  assert.equal('true', res.text);
-                }
-                done();
-              });
-    });
+describe('image-diff-by-base64', function() {
+    it('Files are not same', function (done) {
+      var Image1 = `${__dirname}/image/img1.png`;
+      var Image2 = `${__dirname}/image/img2.png`;
+      var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
+      var base64image2Data = fs.readFileSync(Image2, { encoding: "base64" });
+      request.post({
+          url: SERVER_URL,
+          body: "{\"image1\":\""+ base64image1Data+"\",\"image2\":\""+ base64image2Data+"\"}"
+      }, function (error, response, body) {
+          assert.notEqual(response.body.content, null);
+      });
+      done();
+  });
 
-    it('Files are same', function(done) {
-      request.post('/image-diff')
-             .set('Content-Type', 'multipart/form-data')
-             .attach('image', './test/image/img1.png')
-             .attach('image', './test/image/img1.png')
-             .end(function(err, res) {
-               if(res){
-                 assert.equal('false', res.text);
-               }
-               done();
-             });
-   });
+    it('Files are same', function (done) {
+      var Image1 = `${__dirname}/image/img1.png`;
+      var Image2 = `${__dirname}/image/img2.png`;
+      var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
+      var base64image2Data = fs.readFileSync(Image2, { encoding: "base64" });
+      request.post({
+          url: SERVER_URL,
+          body: "{\"image1\":\""+ base64image1Data+"\",\"image2\":\""+ base64image2Data+"\"}"
+      }, function (error, response, body) {
+          assert.equal(response.body.content, "Image are same");
+      });
+      done();
+  });
 });

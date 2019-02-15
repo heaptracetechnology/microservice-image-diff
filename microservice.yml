@@ -7,31 +7,43 @@ info:
   title: Image Diff
   description: This is a simple image difference service
   contact:
-    name: Rohit S
+    name: Rohit Shetty
     url: https://github.com/heaptracetechnology/microservice-imagediff
     email: rohits@heaptrace.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT 
 actions:
-  imagediff:
+  compare:
     help: Get difference between two images
     arguments:
       image1:
-        type: any
+        type: string
         in: requestBody
-        help: First and second image to compare
+        required: true
+        help: First image base64 data to compare
       image2:
-        type: any
+        type: string
         in: requestBody
-        help: First and second image to compare
+        required: true
+        help: Second image base64 data to compare
     http:
       port: 3000
       method: post
-      path: /image-diff
-      contentType: multipart/form-data
+      path: /image-diff-by-base64
+      contentType: application/json
     output:
-      type: any
+      type: object
+      properties:
+        name:
+          help: The image difference file name
+          type: string
+        content:
+          help: The content of image difference in base64 for different images, else content = "The Images are same"
+          type: string
+        type:
+          help: The type of data
+          type: string
 environment:
   SERVER_PORT:
     required: false
