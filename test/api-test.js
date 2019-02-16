@@ -1,34 +1,50 @@
 var supertest = require('supertest');
 var request = supertest('localhost:3000');
 var fs = require('fs');
+const nock = require('nock');
 var SERVER_URL = "http://localhost:3000/image-diff-by-base64";
 
-describe('image-diff-by-base64', function() {
-    it('Images are not same', function (done) {
-      var Image1 = `${__dirname}/image/img1.png`;
-      var Image2 = `${__dirname}/image/img2.png`;
-      var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
-      var base64image2Data = fs.readFileSync(Image2, { encoding: "base64" });
-      request.post({
-          url: SERVER_URL,
-          body: "{\"image1\":\""+ base64image1Data+"\",\"image2\":\""+ base64image2Data+"\"}"
-      }, function (error, response, body) {
-          assert.notEqual(response.body.content, null);
-      });
-      done();
-  });
+describe('Compare different images with base64 data', function() {
 
-    it('Images are same', function (done) {
-      var Image1 = `${__dirname}/image/img1.png`;
-      var Image2 = `${__dirname}/image/img2.png`;
-      var base64image1Data = fs.readFileSync(Image1, { encoding: "base64" });
-      var base64image2Data = fs.readFileSync(Image2, { encoding: "base64" });
-      request.post({
-          url: SERVER_URL,
-          body: "{\"image1\":\""+ base64image1Data+"\",\"image2\":\""+ base64image2Data+"\"}"
-      }, function (error, response, body) {
-          assert.equal(response.body.content, "Image are same");
-      });
-      done();
-  });
+    beforeEach(() => {
+        nock('http://localhost:3000')
+            .post('/image-diff-by-base64')
+            .reply(200, [{ "name": "diff.png", "content": "base64data=", "type": "base64"}])
+    });
+    it('Compare different images with base64 data', function (done) {
+
+        request.post({
+            url: 'http://localhost:3000/image-diff-by-base64',
+        }, function (error, response) {
+            var res = JSON.parse(response.body);
+            expect(typeof res).to.equal('object');
+            expect(res.name).to.equal("diff.png");
+            expect(res.content).to.equal('base64data=');
+            expect(res.type).to.equal('base64');
+        });
+        done();
+    });
+});
+
+
+describe('Compare same images with base64 data', function() {
+
+    beforeEach(() => {
+        nock('http://localhost:3000')
+            .post('/image-diff-by-base64')
+            .reply(200, [{ "name": "diff.png", "content": "Images are same", "type": "base64"}])
+    });
+    it('Compare same images with base64 data', function (done) {
+
+        request.post({
+            url: 'http://localhost:3000/image-diff-by-base64',
+        }, function (error, response) {
+            var res = JSON.parse(response.body);
+            expect(typeof res).to.equal('object');
+            expect(res.name).to.equal("diff.png");
+            expect(res.content).to.equal('Images are same');
+            expect(res.type).to.equal('base64');
+        });
+        done();
+    });
 });
