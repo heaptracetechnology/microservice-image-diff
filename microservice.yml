@@ -35,17 +35,12 @@ actions:
     output:
       type: object
       properties:
-        name:
-          help: The image difference file name
-          type: string
+        equal:
+          help: The image difference file boolean value
+          type: boolean
         content:
           help: The content of image difference in base64 for different images, else content = "The Images are same"
           type: string
-        type:
-          help: The type of data
+        format:
+          help: The encoded content type
           type: string
-environment:
-  SERVER_PORT:
-    required: false
-    type: int
-    help: port for the server
