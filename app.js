@@ -54,7 +54,7 @@ app.post('/image-diff-by-base64', function (req, res) {
             diff.pack().pipe(fs.createWriteStream(difffile).on('close', function () {
                 var bitmap = fs.readFileSync(difffile);
                 converteddata = new Buffer.from(bitmap).toString('base64');
-                var ret = { equal: false , content: converteddata, format: '.png' };
+                var ret = { equal: false , content: converteddata, format: 'png' };
                 return res.status(HttpStatus.OK).send(ret);
             }));
         } else {
