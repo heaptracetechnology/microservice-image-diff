@@ -9,6 +9,7 @@ An OMG service to check difference in image content by pixel, this take two imag
 ##### Compare Images
 ```coffee
 >>> image-diff compare image1:'base64data' image2:'base64data'
+{"equal":"true/false","content":"Base64 image diff","format":"contentType"}
 ```
 
 Curious to [learn more](https://docs.storyscript.io/)?
