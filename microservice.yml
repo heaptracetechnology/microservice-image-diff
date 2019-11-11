@@ -1,7 +1,7 @@
 omg: 1
 lifecycle:
   startup:
-    command: ["node", "app.js"]
+    command: ['node', '/app/src/index.js']
 info:
   version: 1.0.0
   title: Image Diff
@@ -12,7 +12,7 @@ info:
     email: rohits@heaptrace.com
   license:
     name: MIT
-    url: https://opensource.org/licenses/MIT 
+    url: https://opensource.org/licenses/MIT
 actions:
   compare:
     help: Get difference between two images
@@ -39,7 +39,9 @@ actions:
           help: The image difference file boolean value
           type: boolean
         content:
-          help: The content of image difference in base64 for different images, else content = "The Images are same"
+          help:
+            The content of image difference in base64 for different images, else
+            content = "The Images are same"
           type: string
         format:
           help: The encoded content type
