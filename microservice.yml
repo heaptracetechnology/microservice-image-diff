@@ -6,10 +6,6 @@ info:
   version: 1.0.0
   title: Image Diff
   description: This is a simple image difference service
-  contact:
-    name: Rohit Shetty
-    url: https://github.com/heaptracetechnology/microservice-imagediff
-    email: rohits@heaptrace.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
