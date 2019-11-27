@@ -1,14 +1,20 @@
-omg: 1
-lifecycle:
-  startup:
-    command: ['node', '/app/src/index.js']
+oms: 1
 info:
   version: 1.0.0
   title: Image Diff
   description: This is a simple image difference service
   license:
     name: MIT
-    url: https://opensource.org/licenses/MIT
+    url: 'https://opensource.org/licenses/MIT'
+  contact:
+    name: Open Microservices
+    url: 'https://openmicroservices.org'
+    email: core@openmicroservices.org
+lifecycle:
+  startup:
+    command:
+      - node
+      - /app/src/index.js
 actions:
   compare:
     help: Get difference between two images
@@ -35,7 +41,7 @@ actions:
           help: The image difference file boolean value
           type: boolean
         content:
-          help:
+          help: >-
             The content of image difference in base64 for different images, else
             content = "The Images are same"
           type: string
