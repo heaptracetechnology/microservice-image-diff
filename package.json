@@ -19,7 +19,7 @@
     "fs": "0.0.1-security",
     "http-status-codes": "^1.3.0",
     "multer": "^1.1.0",
-    "pixelmatch": "^4.0.2",
+    "pixelmatch": "^5.0.0",
     "pngjs": "^3.3.3"
   },
   "devDependencies": {
