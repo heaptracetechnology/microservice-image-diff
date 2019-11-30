@@ -23,10 +23,10 @@
     "pngjs": "^3.3.3"
   },
   "devDependencies": {
-    "mocha": "^2.3.4",
-    "nock": "^10.0.6",
-    "should": "^7.1.1",
-    "supertest": "~1.1.0"
+    "mocha": "2.5.3",
+    "nock": "10.0.6",
+    "should": "7.1.1",
+    "supertest": "1.1.0"
   },
   "scripts": {
     "start": "node src/index.js",
